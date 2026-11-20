@@ -1,0 +1,22 @@
+name: LabAegis CI & Regulatory Guardrails
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test-containment-stack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install LabAegis & test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Run full regulatory, ontology, containment & XAI test suite
+        run: pytest -v
